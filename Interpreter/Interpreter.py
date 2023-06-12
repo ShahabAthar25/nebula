@@ -35,6 +35,8 @@ class Interpreter:
             result, error = left.division(right)
         elif node.op.type == TokenTypes.MODULO:
             result, error = left.modulo(right)
+        elif node.op.type == TokenTypes.POWER:
+            result, error = left.power(right)
         else:
             raise Exception("Operator Not Found")
 

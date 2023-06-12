@@ -28,5 +28,9 @@ class Number:
                 return None, DIVISION_BY_ZERO(f"The number {self.value} cannot be divided by zero (Modulo '%').")
             return Number(self.value % other.value), None
 
+    def power(self, other):
+        if isinstance(other, Number):
+            return Number(self.value ** other.value), None
+
     def __repr__(self):
         return f"{self.value}"

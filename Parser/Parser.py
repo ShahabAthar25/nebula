@@ -26,7 +26,7 @@ class Parser:
 
         return res
 
-    def factor(self):
+    def atom(self):
         res = ErrorHandler()
         tok = self.current_tok
 
@@ -45,7 +45,13 @@ class Parser:
 
             return res.success(expr)
         
-        elif self.current_tok.type in (TokenTypes.MINUS, TokenTypes.PLUS):
+        else:
+            return res.failure(SyntaxError("Expected a expr."))
+        
+    def factor(self):
+        res = ErrorHandler()
+
+        if self.current_tok.type in (TokenTypes.MINUS, TokenTypes.PLUS):
             op = self.current_tok
             self.advance()
 
@@ -54,8 +60,7 @@ class Parser:
 
             return res.success(UnaryNode(op, value))
         
-        else:
-            return res.failure(SyntaxError("Expected a expr."))
+        return self.binop(self.atom, (TokenTypes.POWER), self.factor)
 
     def term(self):
         return self.binop(self.factor, (TokenTypes.DIVIDE, TokenTypes.MULTIPLY, TokenTypes.MODULO))
@@ -64,17 +69,20 @@ class Parser:
         return self.binop(self.term, (TokenTypes.PLUS, TokenTypes.MINUS))
 
         
-    def binop(self, func, ops):
+    def binop(self, func_a, ops, func_b=None):
+        if func_b == None:
+            func_b = func_a
+
         res = ErrorHandler()
 
-        left = res.register(func())
+        left = res.register(func_a())
         if res.error: return res
 
         while self.current_tok.type in ops:
             tok = self.current_tok
             self.advance()
 
-            right = res.register(func())
+            right = res.register(func_b())
             if res.error: return res
 
             left = BinOpNode(left, tok, right)

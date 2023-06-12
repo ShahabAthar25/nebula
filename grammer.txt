@@ -3,9 +3,7 @@ expr    : term (PLUS|MINUS term)*
 term    : factor (DIVIDE|MULTIPLY|MODULO factor)*
 
 factor  : (PLUS|MINUS) INT|FLOAT
-        : power
-
-power   : atom (POW factor)*
+        : atom (POW factor)*
 
 atom    : INT|FLOAT
         | LPAREN expr RPAREN
