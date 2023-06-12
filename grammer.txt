@@ -1,0 +1,7 @@
+expr    : term (PLUS|MINUS term)
+
+term    : factor (DIVIDE|MULTIPLY|MODULO factor)
+
+factor  : INT|FLOAT
+        | LPAREN expr RPAREN
+        | (PLUS|MINUS) INT|FLOAT
