@@ -36,6 +36,9 @@ class Lexer:
             elif self.current_char == "%":
                 tokens.append(Token(TokenTypes.MODULO))
                 self.advance()
+            elif self.current_char == "*":
+                tokens.append(Token(TokenTypes.POWER))
+                self.advance()
             elif self.current_char == "(":
                 tokens.append(Token(TokenTypes.LPAREN))
                 self.advance()

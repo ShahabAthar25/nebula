@@ -6,6 +6,7 @@ class TokenTypes:
     MULTIPLY    = "MULTIPLY"
     DIVIDE      = "DIVIDE"
     MODULO      = "MODULO"
+    POWER       = "POWER"
     LPAREN      = "LPAREN"
     RPAREN      = "RPAREN"
     EOF         = "EOF"
