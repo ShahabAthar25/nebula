@@ -1,15 +1,22 @@
 class TokenTypes:
-    INT         = "INT"
-    FLOAT       = "FLOAT"
-    PLUS        = "PLUS"
-    MINUS       = "MINUS"
-    MULTIPLY    = "MULTIPLY"
-    DIVIDE      = "DIVIDE"
-    MODULO      = "MODULO"
-    POWER       = "POWER"
-    LPAREN      = "LPAREN"
-    RPAREN      = "RPAREN"
-    EOF         = "EOF"
+    INT = "INT"
+    FLOAT = "FLOAT"
+    PLUS = "PLUS"
+    MINUS = "MINUS"
+    MULTIPLY = "MULTIPLY"
+    DIVIDE = "DIVIDE"
+    MODULO = "MODULO"
+    POWER = "POWER"
+    LPAREN = "LPAREN"
+    RPAREN = "RPAREN"
+    KEYWORD = "KEYWORD"
+    IDENTIFIER = "IDENTIFIER"
+    EOF = "EOF"
+
+
+class KeywordTypes:
+    VAR = "var"
+
 
 class Token:
     def __init__(self, type, value=None):
