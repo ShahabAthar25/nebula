@@ -16,6 +16,8 @@ def shell():
             ast = parser.parse()
             if ast.error: print(ast.error.asString()); continue
 
+            print(ast.value)
+
             # interpreter = Interpreter()
             # result = interpreter.visit(ast.value)
 

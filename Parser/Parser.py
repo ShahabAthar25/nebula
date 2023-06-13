@@ -1,4 +1,4 @@
-from Lexer.Tokens import TokenTypes
+from Lexer.Tokens import TokenTypes, KeywordTypes
 from Errors.Tokens import SyntaxError
 from Errors.EOF import EOFError
 from Utils.ErrorHandler import ErrorHandler
@@ -45,6 +45,10 @@ class Parser:
 
             return res.success(expr)
         
+        elif self.current_tok.type == TokenTypes.IDENTIFIER:
+            self.advance()
+            return res.success(VarAccessNode(tok))
+        
         else:
             return res.failure(SyntaxError("Expected a expr."))
         
@@ -66,6 +70,25 @@ class Parser:
         return self.binop(self.factor, (TokenTypes.DIVIDE, TokenTypes.MULTIPLY, TokenTypes.MODULO))
 
     def expr(self):
+        res = ErrorHandler()
+
+        if self.current_tok.matches(TokenTypes.KEYWORD, KeywordTypes.VAR):
+            self.advance()
+
+            identifier = self.current_tok
+            self.advance()
+
+            if self.current_tok.type != TokenTypes.EQ:
+                res.failure(SyntaxError("Expected '='"))
+
+            self.advance()
+
+            expr = res.register(self.expr())
+            if res.error: return res
+
+            return res.success(VarAssignNode(identifier, expr))
+
+
         return self.binop(self.term, (TokenTypes.PLUS, TokenTypes.MINUS))
 
         
