@@ -1,7 +1,10 @@
-from Lexer.Tokens import Token, TokenTypes
+from Lexer.Tokens import Token, TokenTypes, KeywordTypes
 from Errors.Tokens import SyntaxError
+import string
+
 
 DIGITS = "1234567890"
+LETTERS = string.ascii_letters
 
 class Lexer:
     def __init__(self, text):
@@ -39,6 +42,9 @@ class Lexer:
             elif self.current_char == "^":
                 tokens.append(Token(TokenTypes.POWER))
                 self.advance()
+            elif self.current_char == "=":
+                tokens.append(Token(TokenTypes.EQ))
+                self.advance()
             elif self.current_char == "(":
                 tokens.append(Token(TokenTypes.LPAREN))
                 self.advance()
@@ -49,9 +55,13 @@ class Lexer:
                 token, error = self.make_number()
                 if error: return [], error
                 tokens.append(token)
+            elif self.current_char in LETTERS:
+                token, error = self.make_identifier()
+                if error: return [], error
+                tokens.append(token)
             else:
                 return [], SyntaxError(f"Token '{self.current_char}' was not recognized by nebula.")
-            
+
         tokens.append(Token(TokenTypes.EOF))
 
         return tokens, None
@@ -75,3 +85,15 @@ class Lexer:
             return Token(TokenTypes.INT, int(num_string)), None
         else:
             return None, SyntaxError("Float number can only have one decimal point '.'")
+        
+    def make_identifier(self):
+        identifier_string = ""
+
+        while self.current_char != None and self.current_char in LETTERS:
+            identifier_string += self.current_char
+            self.advance()
+
+        if KeywordTypes.check_variable(identifier_string):
+            return Token(TokenTypes.KEYWORD, identifier_string), None
+        else:
+            return Token(TokenTypes.IDENTIFIER, identifier_string), None
